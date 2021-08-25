@@ -19,6 +19,7 @@ export class PathFindingVisualizer extends Component {
     width: window.innerWidth,
     numRows: numberOfRows,
     numColumns: numberOfColumns,
+    visualizingAlgorithm: false,
   };
   updateDimensions = () => {
     this.setState({
@@ -33,12 +34,61 @@ export class PathFindingVisualizer extends Component {
     this.setState({ grid });
   }
 
+  clearGrid() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    for (let row = 0; row < this.state.grid.length; row++) {
+      for (let col = 0; col < this.state.grid[0].length; col++) {
+        if (
+          !(
+            (row === startNodeRow && col === startNodeCol) ||
+            (row === finishNodeRow && col === finishNodeCol)
+          )
+        ) {
+          document.getElementById(`node-${row}-${col}`).className = 'node';
+        }
+      }
+    }
+    const newGrid = getInitialGrid(this.state.numRows, this.state.numColumns);
+    this.setState({
+      grid: newGrid,
+      visualizingAlgorithm: false,
+    });
+  }
+
+  clearPath() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    for (let row = 0; row < this.state.grid.length; row++) {
+      for (let col = 0; col < this.state.grid[0].length; col++) {
+        if (
+          document.getElementById(`node-${row}-${col}`).className ===
+          'node node-shortest-path'
+        ) {
+          document.getElementById(`node-${row}-${col}`).className = 'node';
+        }
+      }
+    }
+    const newGrid = getGridWithoutPath(this.state.grid);
+    this.setState({
+      grid: newGrid,
+      visualizingAlgorithm: false,
+    });
+  }
+
   render() {
     let { grid } = this.state;
     console.log(grid);
     return (
       <>
-        <Navbar />
+        <Navbar
+          visualizingAlgorithm={this.state.visualizingAlgorithm}
+          visualizeDFS={this.visualizeDFS.bind(this)}
+          clearGrid={this.clearGrid.bind(this)}
+          clearPath={this.clearPath.bind(this)}
+        />
         <div className="grid">
           {grid.map((row, rowId) => {
             return (
@@ -115,6 +165,24 @@ const createNode = (row, col) => {
     isWall: false,
     previousNode: null,
   };
+};
+
+const getGridWithoutPath = (grid) => {
+  let newGrid = grid.slice();
+  for (let row of grid) {
+    for (let node of row) {
+      let newNode = {
+        ...node,
+        distance: Infinity,
+        totalDistance: Infinity,
+        isVisited: false,
+        isShortest: false,
+        previousNode: null,
+      };
+      newGrid[node.row][node.col] = newNode;
+    }
+  }
+  return newGrid;
 };
 
 export default PathFindingVisualizer;
