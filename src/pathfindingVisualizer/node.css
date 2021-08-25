@@ -1,0 +1,14 @@
+.node {
+  width: var(--width);
+  height: var(--height);
+  border: 1px solid rgb(175, 216, 248);
+  display: inline-block;
+}
+
+.node-start {
+  background-color: green;
+}
+
+.node-finish {
+  background-color: red;
+}

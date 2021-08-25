@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import PathFindingVisualizer from './PathFindingVisualizer';
+import PathFindingVisualizer from './pathfindingVisualizer/pathFindingVisualizer';
 
 ReactDOM.render(
   <React.StrictMode>
