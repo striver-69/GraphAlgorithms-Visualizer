@@ -51,8 +51,64 @@ export class PathFindingVisualizer extends Component {
       const visitedNodesInOrder = depthFirstSearch(grid, startNode, finishNode);
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderDFS(finishNode);
+      this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }, 10);
   }
+
+  animateAlgorithm = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+    let newGrid = this.state.grid.slice();
+    for (let row of newGrid) {
+      for (let node of row) {
+        let newNode = {
+          ...node,
+          isVisited: false,
+        };
+        newGrid[node.row][node.col] = newNode;
+      }
+    }
+    this.setState({ grid: newGrid });
+    for (let i = 1; i <= visitedNodesInOrder.length; i++) {
+      let node = visitedNodesInOrder[i];
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.animateShortestPath(
+            nodesInShortestPathOrder,
+            visitedNodesInOrder
+          );
+        }, i * 10);
+        return;
+      }
+      setTimeout(() => {
+        //visited node
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-visited';
+      }, i * 10);
+    }
+  };
+
+  animateShortestPath = (nodesInShortestPathOrder, visitedNodesInOrder) => {
+    if (nodesInShortestPathOrder.length === 1)
+      this.setState({ visualizingAlgorithm: false });
+    for (let i = 1; i < nodesInShortestPathOrder.length; i++) {
+      if (i === nodesInShortestPathOrder.length - 1) {
+        setTimeout(() => {
+          let newGrid = updateNodesForRender(
+            this.state.grid,
+            nodesInShortestPathOrder,
+            visitedNodesInOrder
+          );
+          this.setState({ grid: newGrid, visualizingAlgorithm: false });
+        }, i * 10);
+        return;
+      }
+      let node = nodesInShortestPathOrder[i];
+      setTimeout(() => {
+        //shortest path node
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-shortest-path';
+      }, i * 10);
+    }
+  };
 
   clearGrid() {
     if (this.state.visualizingAlgorithm) {
@@ -203,6 +259,37 @@ const getGridWithoutPath = (grid) => {
     }
   }
   return newGrid;
+};
+
+const updateNodesForRender = (
+  grid,
+  nodesInShortestPathOrder,
+  visitedNodesInOrder
+) => {
+  let newGrid = grid.slice();
+  for (let node of visitedNodesInOrder) {
+    if (
+      (node.row === startNodeRow && node.col === startNodeCol) ||
+      (node.row === finishNodeRow && node.col === finishNodeCol)
+    )
+      continue;
+    let newNode = {
+      ...node,
+      isVisited: true,
+    };
+    newGrid[node.row][node.col] = newNode;
+  }
+  for (let node of nodesInShortestPathOrder) {
+    if (node.row === finishNodeRow && node.col === finishNodeCol) {
+      return newGrid;
+    }
+    let newNode = {
+      ...node,
+      isVisited: false,
+      isShortest: true,
+    };
+    newGrid[node.row][node.col] = newNode;
+  }
 };
 
 export default PathFindingVisualizer;
