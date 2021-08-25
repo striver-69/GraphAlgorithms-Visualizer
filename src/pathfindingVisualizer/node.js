@@ -7,13 +7,27 @@ export class Node extends Component {
     this.state = {};
   }
   render() {
-    const { row, col, isStart, isFinish, width, height, numRows, numColumns } =
-      this.props;
+    const {
+      row,
+      col,
+      isStart,
+      isFinish,
+      width,
+      height,
+      numRows,
+      numColumns,
+      isShortest,
+      isVisited,
+    } = this.props;
 
     const extraClass = isStart
       ? 'node node-start'
       : isFinish
       ? 'node node-finish'
+      : isShortest
+      ? 'node node-shortest-path'
+      : isVisited
+      ? 'node node-visited'
       : 'node';
 
     let cellWidth = Math.floor((width - 15) / numColumns);

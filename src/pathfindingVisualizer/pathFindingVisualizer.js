@@ -170,7 +170,8 @@ export class PathFindingVisualizer extends Component {
             return (
               <div key={rowId}>
                 {row.map((node, nodeId) => {
-                  const { row, col, isStart, isFinish } = node;
+                  const { row, col, isStart, isFinish, isShortest, isVisited } =
+                    node;
                   return (
                     <Node
                       key={nodeId}
@@ -178,6 +179,8 @@ export class PathFindingVisualizer extends Component {
                       col={col}
                       isStart={isStart}
                       isFinish={isFinish}
+                      isShortest={isShortest}
+                      isVisited={isVisited}
                       width={this.state.width}
                       height={this.state.height}
                       numRows={this.state.numRows}
