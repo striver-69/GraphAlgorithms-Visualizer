@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './pathFindingVisualizer.css';
 import Node from './node';
+import Navbar from './navbar';
 
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
@@ -36,30 +37,33 @@ export class PathFindingVisualizer extends Component {
     let { grid } = this.state;
     console.log(grid);
     return (
-      <div className="grid">
-        {grid.map((row, rowId) => {
-          return (
-            <div key={rowId}>
-              {row.map((node, nodeId) => {
-                const { row, col, isStart, isFinish } = node;
-                return (
-                  <Node
-                    key={nodeId}
-                    row={row}
-                    col={col}
-                    isStart={isStart}
-                    isFinish={isFinish}
-                    width={this.state.width}
-                    height={this.state.height}
-                    numRows={this.state.numRows}
-                    numColumns={this.state.numColumns}
-                  />
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
+      <>
+        <Navbar />
+        <div className="grid">
+          {grid.map((row, rowId) => {
+            return (
+              <div key={rowId}>
+                {row.map((node, nodeId) => {
+                  const { row, col, isStart, isFinish } = node;
+                  return (
+                    <Node
+                      key={nodeId}
+                      row={row}
+                      col={col}
+                      isStart={isStart}
+                      isFinish={isFinish}
+                      width={this.state.width}
+                      height={this.state.height}
+                      numRows={this.state.numRows}
+                      numColumns={this.state.numColumns}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </>
     );
   }
 }
