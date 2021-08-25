@@ -3,6 +3,12 @@ import './pathFindingVisualizer.css';
 import Node from './node';
 import Navbar from './navbar';
 
+//Pathfinding Algorithms
+import {
+  depthFirstSearch,
+  getNodesInShortestPathOrderDFS,
+} from '../pathfindingAlgorithms/depthFirstSearch';
+
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
@@ -32,6 +38,20 @@ export class PathFindingVisualizer extends Component {
     window.addEventListener('resize', this.updateDimensions);
     const grid = getInitialGrid(this.state.numRows, this.state.numColumns);
     this.setState({ grid });
+  }
+  visualizeDFS() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    this.setState({ visualizingAlgorithm: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const visitedNodesInOrder = depthFirstSearch(grid, startNode, finishNode);
+      const nodesInShortestPathOrder =
+        getNodesInShortestPathOrderDFS(finishNode);
+    }, 10);
   }
 
   clearGrid() {
