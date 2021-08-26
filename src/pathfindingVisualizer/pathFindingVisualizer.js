@@ -136,7 +136,7 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const visitedNodesInOrder = randomWalk(grid, startNode, finishNode);
       this.animateRandomWalk(visitedNodesInOrder);
-    }, this.state.speed);
+    }, 10);
   }
 
   animateRandomWalk = (visitedNodesInOrder) => {
