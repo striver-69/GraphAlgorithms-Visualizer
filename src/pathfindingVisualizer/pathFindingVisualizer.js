@@ -19,6 +19,11 @@ import {
   getNodesInShortestPathOrderDijkstra,
 } from '../pathfindingAlgorithms/dijkstra';
 
+import {
+  astar,
+  getNodesInShortestPathOrderAstar,
+} from '../pathfindingAlgorithms/astar';
+
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
@@ -98,6 +103,22 @@ export class PathFindingVisualizer extends Component {
       const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderDijkstra(finishNode);
+      this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    }, 10);
+  }
+
+  visualizeAStar() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    this.setState({ visualizingAlgorithm: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const visitedNodesInOrder = astar(grid, startNode, finishNode);
+      const nodesInShortestPathOrder =
+        getNodesInShortestPathOrderAstar(finishNode);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }, 10);
   }
@@ -211,6 +232,7 @@ export class PathFindingVisualizer extends Component {
           visualizeDFS={this.visualizeDFS.bind(this)}
           visualizeBFS={this.visualizeBFS.bind(this)}
           visualizeDijkstra={this.visualizeDijkstra.bind(this)}
+          visualizeAStar={this.visualizeAStar.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />

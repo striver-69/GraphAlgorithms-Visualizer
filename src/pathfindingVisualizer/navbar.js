@@ -49,6 +49,8 @@ export class Navbar extends Component {
         this.props.visualizeBFS();
       else if (this.state.algorithm === 'Visualize Dijkstra')
         this.props.visualizeDijkstra();
+      else if (this.state.algorithm === 'Visualize A*')
+        this.props.visualizeAStar();
     }
   }
 
@@ -132,6 +134,13 @@ export class Navbar extends Component {
                     }
                   >
                     Breadth First Search
+                  </button>
+                  <button
+                    className="dropdown-item btn-light"
+                    type="button"
+                    onClick={() => this.selectAlgorithm('Visualize A*')}
+                  >
+                    A* Algorithm
                   </button>
                 </div>
               </div>{' '}
