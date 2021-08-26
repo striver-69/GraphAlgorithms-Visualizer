@@ -51,6 +51,8 @@ export class Navbar extends Component {
         this.props.visualizeDijkstra();
       else if (this.state.algorithm === 'Visualize A*')
         this.props.visualizeAStar();
+      else if (this.state.algorithm === 'Visualize Random Walk')
+        this.props.visualizeRandomWalk();
     }
   }
 
@@ -141,6 +143,15 @@ export class Navbar extends Component {
                     onClick={() => this.selectAlgorithm('Visualize A*')}
                   >
                     A* Algorithm
+                  </button>
+                  <button
+                    className="dropdown-item btn-light"
+                    type="button"
+                    onClick={() =>
+                      this.selectAlgorithm('Visualize Random Walk')
+                    }
+                  >
+                    Random Walk
                   </button>
                 </div>
               </div>{' '}

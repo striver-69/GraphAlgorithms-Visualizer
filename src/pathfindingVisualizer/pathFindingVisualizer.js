@@ -24,6 +24,8 @@ import {
   getNodesInShortestPathOrderAstar,
 } from '../pathfindingAlgorithms/astar';
 
+import { randomWalk } from '../pathfindingAlgorithms/randomWalk';
+
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
@@ -122,6 +124,45 @@ export class PathFindingVisualizer extends Component {
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }, 10);
   }
+
+  visualizeRandomWalk() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    this.setState({ visualizingAlgorithm: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const visitedNodesInOrder = randomWalk(grid, startNode, finishNode);
+      this.animateRandomWalk(visitedNodesInOrder);
+    }, this.state.speed);
+  }
+
+  animateRandomWalk = (visitedNodesInOrder) => {
+    for (let i = 1; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.setState({ visualizingAlgorithm: false });
+        }, i * 10);
+        return;
+      }
+      let node = visitedNodesInOrder[i];
+      if (i === visitedNodesInOrder.length - 1) {
+        setTimeout(() => {
+          //finish node
+          document.getElementById(`node-${node.row}-${node.col}`).className =
+            'node node-finish-reached';
+        }, i * 10);
+        continue;
+      }
+      setTimeout(() => {
+        //visited node
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-visited';
+      }, i * 10);
+    }
+  };
 
   animateAlgorithm = (visitedNodesInOrder, nodesInShortestPathOrder) => {
     let newGrid = this.state.grid.slice();
@@ -233,6 +274,7 @@ export class PathFindingVisualizer extends Component {
           visualizeBFS={this.visualizeBFS.bind(this)}
           visualizeDijkstra={this.visualizeDijkstra.bind(this)}
           visualizeAStar={this.visualizeAStar.bind(this)}
+          visualizeRandomWalk={this.visualizeRandomWalk.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />
