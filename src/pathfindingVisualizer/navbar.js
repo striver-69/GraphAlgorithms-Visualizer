@@ -45,6 +45,8 @@ export class Navbar extends Component {
       this.setState({ pathState: true });
       if (this.state.algorithm === 'Visualize Depth First Search')
         this.props.visualizeDFS();
+      else if (this.state.algorithm === 'Visualize Breadth First Search')
+        this.props.visualizeBFS();
     }
   }
 
@@ -112,6 +114,15 @@ export class Navbar extends Component {
                     }
                   >
                     Depth First Search
+                  </button>
+                  <button
+                    className="dropdown-item btn-light"
+                    type="button"
+                    onClick={() =>
+                      this.selectAlgorithm('Visualize Breadth First Search')
+                    }
+                  >
+                    Breadth First Search
                   </button>
                 </div>
               </div>{' '}
