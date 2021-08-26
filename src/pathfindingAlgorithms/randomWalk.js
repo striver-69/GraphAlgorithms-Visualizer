@@ -37,10 +37,10 @@ function getRandomNeighbour(node, grid) {
   if (col !== grid[0].length - 1) neighbours.push(grid[row][col + 1]);
   if (row !== grid.length - 1) neighbours.push(grid[row + 1][col]);
   if (col !== 0) neighbours.push(grid[row][col - 1]);
-  let neighboursFilteredStart = neighbours.filter(
-    (neighbour) => !neighbour.isStart
+  let neighboursFilteredStartAndWall = neighbours.filter(
+    (neighbour) => !neighbour.isStart && !neighbour.isWall
   );
-  let neighboursFilteredVisited = neighboursFilteredStart.filter(
+  let neighboursFilteredVisited = neighboursFilteredStartAndWall.filter(
     (neighbour) => !neighbour.isVisited
   );
   if (neighboursFilteredVisited.length > 0) {
@@ -48,8 +48,8 @@ function getRandomNeighbour(node, grid) {
       Math.floor(Math.random() * neighboursFilteredVisited.length)
     ];
   }
-  return neighboursFilteredStart[
-    Math.floor(Math.random() * neighboursFilteredStart.length)
+  return neighboursFilteredStartAndWall[
+    Math.floor(Math.random() * neighboursFilteredStartAndWall.length)
   ];
 }
 
@@ -57,7 +57,7 @@ function numNodesVisited(grid) {
   let count = 0;
   for (let row of grid) {
     for (let node of row) {
-      if (node.isVisited) count += 1;
+      if (node.isVisited || node.isWall) count += 1;
     }
   }
   return count;

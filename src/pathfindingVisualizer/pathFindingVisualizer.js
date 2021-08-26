@@ -56,6 +56,7 @@ export class PathFindingVisualizer extends Component {
     numRows: numberOfRows,
     numColumns: numberOfColumns,
     visualizingAlgorithm: false,
+    generatingMaze: false,
   };
   updateDimensions = () => {
     this.setState({
@@ -136,6 +137,7 @@ export class PathFindingVisualizer extends Component {
       const visitedNodesInOrder = astar(grid, startNode, finishNode);
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderAstar(finishNode);
+      // console.log('ASTAR', nodesInShortestPathOrder.length);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }, 10);
   }
@@ -166,6 +168,7 @@ export class PathFindingVisualizer extends Component {
       const visitedNodesInOrder = greedyBFS(grid, startNode, finishNode);
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderGreedyBFS(finishNode);
+      // console.log('GreedyBFS', nodesInShortestPathOrder.length);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }, 10);
   }
@@ -350,7 +353,7 @@ export class PathFindingVisualizer extends Component {
           this.clearGrid();
           let newGrid = getNewGridWithMaze(this.state.grid, walls);
           this.setState({ grid: newGrid, generatingMaze: false });
-        }, i * 10);
+        }, 10);
         return;
       }
       let wall = walls[i];
@@ -422,6 +425,7 @@ export class PathFindingVisualizer extends Component {
           visualizeBidirectionalGreedySearch={this.visualizeBidirectionalGreedySearch.bind(
             this
           )}
+          generatingMaze={this.state.generatingMaze}
           generateRandomMaze={this.generateRandomMaze.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}

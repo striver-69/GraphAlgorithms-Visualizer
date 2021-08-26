@@ -7,6 +7,7 @@ export function depthFirstSearch(grid, startNode, finishNode) {
   unvisitedNodes.push(startNode);
   while (unvisitedNodes.length !== 0) {
     let closestNode = unvisitedNodes.shift();
+    if (closestNode.isWall) continue;
     if (closestNode === finishNode) return visitedNodesInOrder;
     visitedNodesInOrder.push(closestNode);
     closestNode.isVisited = true;
