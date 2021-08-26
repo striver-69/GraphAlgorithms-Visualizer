@@ -18,12 +18,15 @@ export class Node extends Component {
       numColumns,
       isShortest,
       isVisited,
+      isWall,
     } = this.props;
 
     const extraClass = isStart
       ? 'node node-start'
       : isFinish
       ? 'node node-finish'
+      : isWall
+      ? 'node-wall'
       : isShortest
       ? 'node node-shortest-path'
       : isVisited

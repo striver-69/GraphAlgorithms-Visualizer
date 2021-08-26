@@ -36,6 +36,9 @@ import {
   getNodesInShortestPathOrderBidirectionalGreedySearch,
 } from '../pathfindingAlgorithms/bidirectionalGreedySearch';
 
+//----------MAZE ALGORITHMS----------
+import { randomMaze } from '../mazeAlgorithms/randomMaze';
+
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
@@ -66,6 +69,8 @@ export class PathFindingVisualizer extends Component {
     const grid = getInitialGrid(this.state.numRows, this.state.numColumns);
     this.setState({ grid });
   }
+
+  //-------------GRAPH -ALGORITHMS---------------
 
   visualizeDFS() {
     if (this.state.visualizingAlgorithm) {
@@ -196,6 +201,24 @@ export class PathFindingVisualizer extends Component {
     }, this.state.speed);
   }
 
+  //-------------MAZE ALGORITHMS------------
+
+  generateRandomMaze() {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
+      return;
+    }
+    this.setState({ generatingMaze: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const walls = randomMaze(grid, startNode, finishNode);
+      this.animateMaze(walls);
+    }, 10);
+  }
+
+  //-------------ANIMATION RELATED TO ALGORITHMS--------------
+
   animateRandomWalk = (visitedNodesInOrder) => {
     for (let i = 1; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -318,6 +341,28 @@ export class PathFindingVisualizer extends Component {
     }
   };
 
+  //-----------------ANIMATION RELATED TO MAZE------------------
+
+  animateMaze = (walls) => {
+    for (let i = 0; i <= walls.length; i++) {
+      if (i === walls.length) {
+        setTimeout(() => {
+          this.clearGrid();
+          let newGrid = getNewGridWithMaze(this.state.grid, walls);
+          this.setState({ grid: newGrid, generatingMaze: false });
+        }, i * 10);
+        return;
+      }
+      let wall = walls[i];
+      let node = this.state.grid[wall[0]][wall[1]];
+      setTimeout(() => {
+        //Walls
+        document.getElementById(`node-${node.row}-${node.col}`).className =
+          'node node-wall-animated';
+      }, 10);
+    }
+  };
+
   clearGrid() {
     if (this.state.visualizingAlgorithm) {
       return;
@@ -377,6 +422,7 @@ export class PathFindingVisualizer extends Component {
           visualizeBidirectionalGreedySearch={this.visualizeBidirectionalGreedySearch.bind(
             this
           )}
+          generateRandomMaze={this.generateRandomMaze.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />
@@ -385,8 +431,15 @@ export class PathFindingVisualizer extends Component {
             return (
               <div key={rowId}>
                 {row.map((node, nodeId) => {
-                  const { row, col, isStart, isFinish, isShortest, isVisited } =
-                    node;
+                  const {
+                    row,
+                    col,
+                    isStart,
+                    isFinish,
+                    isShortest,
+                    isVisited,
+                    isWall,
+                  } = node;
                   return (
                     <Node
                       key={nodeId}
@@ -400,6 +453,7 @@ export class PathFindingVisualizer extends Component {
                       height={this.state.height}
                       numRows={this.state.numRows}
                       numColumns={this.state.numColumns}
+                      isWall={isWall}
                     />
                   );
                 })}
@@ -444,6 +498,19 @@ const getInitialGrid = (numRows, numColumns) => {
     grid.push(currentRow);
   }
   return grid;
+};
+
+const getNewGridWithMaze = (grid, walls) => {
+  let newGrid = grid.slice();
+  for (let wall of walls) {
+    let node = grid[wall[0]][wall[1]];
+    let newNode = {
+      ...node,
+      isWall: true,
+    };
+    newGrid[wall[0]][wall[1]] = newNode;
+  }
+  return newGrid;
 };
 
 const createNode = (row, col) => {

@@ -60,6 +60,43 @@ export class Navbar extends Component {
     }
   }
 
+  selectMaze(selection) {
+    if (this.props.visualizingAlgorithm || this.props.generatingMaze) {
+      return;
+    }
+    if (
+      selection === this.state.maze ||
+      this.state.maze === 'Generate Maze' ||
+      this.state.maze === 'Select a Maze!'
+    ) {
+      this.setState({ maze: selection });
+    } else if (!this.state.mazeState) {
+      this.setState({ maze: selection });
+    } else {
+      this.clearGrid();
+      this.setState({ maze: selection });
+    }
+  }
+
+  generateMaze() {
+    if (this.props.visualizingAlgorithm || this.props.generatingMaze) {
+      return;
+    }
+    if (this.state.mazeState || this.state.pathState) {
+      this.clearTemp();
+    }
+    if (
+      this.state.maze === 'Generate Maze' ||
+      this.state.maze === 'Select a Maze!'
+    ) {
+      this.setState({ maze: 'Select a Maze!' });
+    } else {
+      this.setState({ mazeState: true });
+      if (this.state.maze === 'Generate Random Maze')
+        this.props.generateRandomMaze();
+    }
+  }
+
   clearPath() {
     if (this.props.visualizingAlgorithm || this.props.generatingMaze) {
       return;
@@ -183,6 +220,38 @@ export class Navbar extends Component {
                 onClick={() => this.visualizeAlgorithm()}
               >
                 {this.state.algorithm}
+              </button>
+            </li>
+            <li className="nav-item dropdown">
+              <div className="dropdown">
+                <button
+                  className="btn btn-light dropdown-toggle"
+                  type="button"
+                  id="dropdownMenu1"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  Mazes
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <button
+                    className="dropdown-item btn-light"
+                    type="button"
+                    onClick={() => this.selectMaze('Generate Random Maze')}
+                  >
+                    Random Maze
+                  </button>
+                </div>
+              </div>{' '}
+            </li>
+            <li>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={() => this.generateMaze()}
+              >
+                {this.state.maze}
               </button>
             </li>
             <li>
