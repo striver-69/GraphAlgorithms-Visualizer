@@ -31,6 +31,11 @@ import {
   getNodesInShortestPathOrderGreedyBFS,
 } from '../pathfindingAlgorithms/greedyBestFirstSearch';
 
+import {
+  bidirectionalGreedySearch,
+  getNodesInShortestPathOrderBidirectionalGreedySearch,
+} from '../pathfindingAlgorithms/bidirectionalGreedySearch';
+
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
@@ -160,6 +165,37 @@ export class PathFindingVisualizer extends Component {
     }, 10);
   }
 
+  visualizeBidirectionalGreedySearch() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    this.setState({ visualizingAlgorithm: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const visitedNodesInOrder = bidirectionalGreedySearch(
+        grid,
+        startNode,
+        finishNode
+      );
+      const visitedNodesInOrderStart = visitedNodesInOrder[0];
+      const visitedNodesInOrderFinish = visitedNodesInOrder[1];
+      const isShortedPath = visitedNodesInOrder[2];
+      const nodesInShortestPathOrder =
+        getNodesInShortestPathOrderBidirectionalGreedySearch(
+          visitedNodesInOrderStart[visitedNodesInOrderStart.length - 1],
+          visitedNodesInOrderFinish[visitedNodesInOrderFinish.length - 1]
+        );
+      this.animateBidirectionalAlgorithm(
+        visitedNodesInOrderStart,
+        visitedNodesInOrderFinish,
+        nodesInShortestPathOrder,
+        isShortedPath
+      );
+    }, this.state.speed);
+  }
+
   animateRandomWalk = (visitedNodesInOrder) => {
     for (let i = 1; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
@@ -184,6 +220,48 @@ export class PathFindingVisualizer extends Component {
       }, i * 10);
     }
   };
+
+  animateBidirectionalAlgorithm(
+    visitedNodesInOrderStart,
+    visitedNodesInOrderFinish,
+    nodesInShortestPathOrder,
+    isShortedPath
+  ) {
+    let len = Math.max(
+      visitedNodesInOrderStart.length,
+      visitedNodesInOrderFinish.length
+    );
+    for (let i = 1; i <= len; i++) {
+      let nodeA = visitedNodesInOrderStart[i];
+      let nodeB = visitedNodesInOrderFinish[i];
+      if (i === visitedNodesInOrderStart.length) {
+        setTimeout(() => {
+          let visitedNodesInOrder = getVisitedNodesInOrder(
+            visitedNodesInOrderStart,
+            visitedNodesInOrderFinish
+          );
+          if (isShortedPath) {
+            this.animateShortestPath(
+              nodesInShortestPathOrder,
+              visitedNodesInOrder
+            );
+          } else {
+            this.setState({ visualizingAlgorithm: false });
+          }
+        }, i * 10);
+        return;
+      }
+      setTimeout(() => {
+        //visited nodes
+        if (nodeA !== undefined)
+          document.getElementById(`node-${nodeA.row}-${nodeA.col}`).className =
+            'node node-visited';
+        if (nodeB !== undefined)
+          document.getElementById(`node-${nodeB.row}-${nodeB.col}`).className =
+            'node node-visited';
+      }, i * 10);
+    }
+  }
 
   animateAlgorithm = (visitedNodesInOrder, nodesInShortestPathOrder) => {
     let newGrid = this.state.grid.slice();
@@ -296,6 +374,9 @@ export class PathFindingVisualizer extends Component {
           visualizeAStar={this.visualizeAStar.bind(this)}
           visualizeRandomWalk={this.visualizeRandomWalk.bind(this)}
           visualizeGreedyBFS={this.visualizeGreedyBFS.bind(this)}
+          visualizeBidirectionalGreedySearch={this.visualizeBidirectionalGreedySearch.bind(
+            this
+          )}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />
@@ -427,6 +508,26 @@ const updateNodesForRender = (
     };
     newGrid[node.row][node.col] = newNode;
   }
+};
+
+const getVisitedNodesInOrder = (
+  visitedNodesInOrderStart,
+  visitedNodesInOrderFinish
+) => {
+  let visitedNodesInOrder = [];
+  let n = Math.max(
+    visitedNodesInOrderStart.length,
+    visitedNodesInOrderFinish.length
+  );
+  for (let i = 0; i < n; i++) {
+    if (visitedNodesInOrderStart[i] !== undefined) {
+      visitedNodesInOrder.push(visitedNodesInOrderStart[i]);
+    }
+    if (visitedNodesInOrderFinish[i] !== undefined) {
+      visitedNodesInOrder.push(visitedNodesInOrderFinish[i]);
+    }
+  }
+  return visitedNodesInOrder;
 };
 
 export default PathFindingVisualizer;
