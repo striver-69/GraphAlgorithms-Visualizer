@@ -26,14 +26,19 @@ import {
 
 import { randomWalk } from '../pathfindingAlgorithms/randomWalk';
 
+import {
+  greedyBFS,
+  getNodesInShortestPathOrderGreedyBFS,
+} from '../pathfindingAlgorithms/greedyBestFirstSearch';
+
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
 
 const startNodeRow = 0;
 const startNodeCol = 0;
-const finishNodeRow = 10;
-const finishNodeCol = 10;
+const finishNodeRow = 20;
+const finishNodeCol = 55;
 
 export class PathFindingVisualizer extends Component {
   state = {
@@ -136,6 +141,22 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const visitedNodesInOrder = randomWalk(grid, startNode, finishNode);
       this.animateRandomWalk(visitedNodesInOrder);
+    }, 10);
+  }
+
+  visualizeGreedyBFS() {
+    if (this.state.visualizingAlgorithm) {
+      return;
+    }
+    this.setState({ visualizingAlgorithm: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const visitedNodesInOrder = greedyBFS(grid, startNode, finishNode);
+      const nodesInShortestPathOrder =
+        getNodesInShortestPathOrderGreedyBFS(finishNode);
+      this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
     }, 10);
   }
 
@@ -265,7 +286,6 @@ export class PathFindingVisualizer extends Component {
 
   render() {
     let { grid } = this.state;
-    console.log(grid);
     return (
       <>
         <Navbar
@@ -275,6 +295,7 @@ export class PathFindingVisualizer extends Component {
           visualizeDijkstra={this.visualizeDijkstra.bind(this)}
           visualizeAStar={this.visualizeAStar.bind(this)}
           visualizeRandomWalk={this.visualizeRandomWalk.bind(this)}
+          visualizeGreedyBFS={this.visualizeGreedyBFS.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />

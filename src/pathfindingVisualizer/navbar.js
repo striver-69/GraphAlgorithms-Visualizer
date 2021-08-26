@@ -53,6 +53,8 @@ export class Navbar extends Component {
         this.props.visualizeAStar();
       else if (this.state.algorithm === 'Visualize Random Walk')
         this.props.visualizeRandomWalk();
+      else if (this.state.algorithm === 'Visualize Greedy BFS')
+        this.props.visualizeGreedyBFS();
     }
   }
 
@@ -152,6 +154,13 @@ export class Navbar extends Component {
                     }
                   >
                     Random Walk
+                  </button>
+                  <button
+                    className="dropdown-item btn-light"
+                    type="button"
+                    onClick={() => this.selectAlgorithm('Visualize Greedy BFS')}
+                  >
+                    Greedy Best First Search
                   </button>
                 </div>
               </div>{' '}
