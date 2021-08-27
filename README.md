@@ -5,13 +5,15 @@ Graphical User Interface built using React Framework to visualize Pathfinding Al
 [Check out the visualizer in action here. Experiment with the pathfinding and maze generation algorithms.](https://graph-algorithms-visualizer.vercel.app/)
 
 ## Pathfinding Algorithms:
-1. Dijkstra's Algorithm
-2. A* Algorithm
-3. Greedy Best First Search
-4. Bidirectional Greedy Search
-5. Breadth First Search
-6. Depth First Search
-7. Random Walk
+1. Dijkstra's Algorithm -> Dijkstra's Algorithm is weighted and guarantees the shortest path!
+2. A* Algorithm -> A* Search is weighted and guarantees the shortest path! 
+3. Greedy Best First Search -> Greedy Best-first Search is weighted and does not guarantee the shortest path!
+4. Bidirectional Greedy Search -> Bidirectional Greedy Best-first Search is weighted and does not guarantee the shortest path! and is fast as compared to Greedy Best First Search
+5. Breadth First Search -> Breath-first Search is unweighted and guarantees the shortest path!
+6. Depth First Search -> Depth-first Search is unweighted and does not guarantee the shortest path!
+7. Random Walk -> Random walk is unwieghted and does not guarantee the shortest path! It can even get trapped in a maze.
+
+
 
 ## Maze Generation Algorithms:
 1. Random Maze
