@@ -93,7 +93,7 @@ function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
   let isStartFinish = false;
   let tempWalls = [];
   if (dir === 0) {
-    if (horizontal.length === 2) return;
+    if (horizontal.length <= 2) return;
     for (let temp of horizontal) {
       if (
         (temp === startNode.row && num === startNode.col) ||
@@ -105,7 +105,7 @@ function addWall(dir, num, vertical, horizontal, startNode, finishNode) {
       tempWalls.push([temp, num]);
     }
   } else {
-    if (vertical.length === 2) return;
+    if (vertical.length <= 2) return;
     for (let temp of vertical) {
       if (
         (num === startNode.row && temp === startNode.col) ||

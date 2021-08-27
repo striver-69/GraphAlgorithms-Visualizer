@@ -96,6 +96,8 @@ export class Navbar extends Component {
         this.props.generateRandomMaze();
       else if (this.state.maze === 'Generate Recursive Maze')
         this.props.generateRecursiveDivisionMaze();
+      else if (this.state.maze === 'Generate Vertical Maze')
+        this.props.generateVerticalMaze();
     }
   }
 
@@ -250,6 +252,13 @@ export class Navbar extends Component {
                     onClick={() => this.selectMaze('Generate Recursive Maze')}
                   >
                     Recursive Division Maze
+                  </button>
+                  <button
+                    className="dropdown-item btn-light"
+                    type="button"
+                    onClick={() => this.selectMaze('Generate Vertical Maze')}
+                  >
+                    Vertical Division Maze
                   </button>
                 </div>
               </div>{' '}
