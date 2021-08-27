@@ -41,6 +41,7 @@ import {
 import { randomMaze } from '../mazeAlgorithms/randomMaze';
 import { recursiveDivisionMaze } from '../mazeAlgorithms/recursiveDivision';
 import { verticalMaze } from '../mazeAlgorithms/verticalMaze';
+import { horizontalMaze } from '../mazeAlgorithms/horizontalMaze';
 
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
@@ -247,6 +248,20 @@ export class PathFindingVisualizer extends Component {
       const startNode = grid[startNodeRow][startNodeCol];
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const walls = verticalMaze(grid, startNode, finishNode);
+      this.animateMaze(walls);
+    }, 10);
+  }
+
+  generateHorizontalMaze() {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
+      return;
+    }
+    this.setState({ generatingMaze: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const walls = horizontalMaze(grid, startNode, finishNode);
       this.animateMaze(walls);
     }, 10);
   }
@@ -462,6 +477,7 @@ export class PathFindingVisualizer extends Component {
           )}
           generateRandomMaze={this.generateRandomMaze.bind(this)}
           generateVerticalMaze={this.generateVerticalMaze.bind(this)}
+          generateHorizontalMaze={this.generateHorizontalMaze.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />
