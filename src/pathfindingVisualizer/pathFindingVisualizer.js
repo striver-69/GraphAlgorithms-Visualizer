@@ -37,7 +37,9 @@ import {
 } from '../pathfindingAlgorithms/bidirectionalGreedySearch';
 
 //----------MAZE ALGORITHMS----------
+
 import { randomMaze } from '../mazeAlgorithms/randomMaze';
+import { recursiveDivisionMaze } from '../mazeAlgorithms/recursiveDivision';
 
 const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
@@ -220,6 +222,20 @@ export class PathFindingVisualizer extends Component {
     }, 10);
   }
 
+  generateRecursiveDivisionMaze() {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
+      return;
+    }
+    this.setState({ generatingMaze: true });
+    setTimeout(() => {
+      const { grid } = this.state;
+      const startNode = grid[startNodeRow][startNodeCol];
+      const finishNode = grid[finishNodeRow][finishNodeCol];
+      const walls = recursiveDivisionMaze(grid, startNode, finishNode);
+      this.animateMaze(walls);
+    }, 10);
+  }
+
   //-------------ANIMATION RELATED TO ALGORITHMS--------------
 
   animateRandomWalk = (visitedNodesInOrder) => {
@@ -353,7 +369,7 @@ export class PathFindingVisualizer extends Component {
           this.clearGrid();
           let newGrid = getNewGridWithMaze(this.state.grid, walls);
           this.setState({ grid: newGrid, generatingMaze: false });
-        }, 10);
+        }, i * 10);
         return;
       }
       let wall = walls[i];
@@ -362,7 +378,7 @@ export class PathFindingVisualizer extends Component {
         //Walls
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-wall-animated';
-      }, 10);
+      }, i * 10);
     }
   };
 
@@ -426,6 +442,9 @@ export class PathFindingVisualizer extends Component {
             this
           )}
           generatingMaze={this.state.generatingMaze}
+          generateRecursiveDivisionMaze={this.generateRecursiveDivisionMaze.bind(
+            this
+          )}
           generateRandomMaze={this.generateRandomMaze.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
