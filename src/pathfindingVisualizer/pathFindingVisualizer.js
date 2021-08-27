@@ -228,7 +228,7 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const walls = randomMaze(grid, startNode, finishNode);
       this.animateMaze(walls);
-    }, 10);
+    }, this.state.mazeSpeed);
   }
 
   generateRecursiveDivisionMaze() {
@@ -242,7 +242,7 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const walls = recursiveDivisionMaze(grid, startNode, finishNode);
       this.animateMaze(walls);
-    }, 10);
+    }, this.state.mazeSpeed);
   }
 
   generateVerticalMaze() {
@@ -256,7 +256,7 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const walls = verticalMaze(grid, startNode, finishNode);
       this.animateMaze(walls);
-    }, 10);
+    }, this.state.mazeSpeed);
   }
 
   generateHorizontalMaze() {
@@ -270,7 +270,7 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const walls = horizontalMaze(grid, startNode, finishNode);
       this.animateMaze(walls);
-    }, 10);
+    }, this.state.mazeSpeed);
   }
 
   //-------------ANIMATION RELATED TO ALGORITHMS--------------
@@ -406,7 +406,7 @@ export class PathFindingVisualizer extends Component {
           this.clearGrid();
           let newGrid = getNewGridWithMaze(this.state.grid, walls);
           this.setState({ grid: newGrid, generatingMaze: false });
-        }, i * 10);
+        }, i * this.state.mazeSpeed);
         return;
       }
       let wall = walls[i];
@@ -415,7 +415,7 @@ export class PathFindingVisualizer extends Component {
         //Walls
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-wall-animated';
-      }, i * 10);
+      }, i * this.state.mazeSpeed);
     }
   };
 
