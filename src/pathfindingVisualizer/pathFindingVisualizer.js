@@ -61,7 +61,10 @@ export class PathFindingVisualizer extends Component {
     numColumns: numberOfColumns,
     visualizingAlgorithm: false,
     generatingMaze: false,
+    speed: 10,
+    mazeSpeed: 10,
   };
+
   updateDimensions = () => {
     this.setState({
       width: window.innerWidth,
@@ -74,6 +77,10 @@ export class PathFindingVisualizer extends Component {
     const grid = getInitialGrid(this.state.numRows, this.state.numColumns);
     this.setState({ grid });
   }
+
+  updateSpeed = (path, maze) => {
+    this.setState({ speed: path, mazeSpeed: maze });
+  };
 
   //-------------GRAPH -ALGORITHMS---------------
 
@@ -273,7 +280,7 @@ export class PathFindingVisualizer extends Component {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.setState({ visualizingAlgorithm: false });
-        }, i * 10);
+        }, i * this.state.speed);
         return;
       }
       let node = visitedNodesInOrder[i];
@@ -282,14 +289,14 @@ export class PathFindingVisualizer extends Component {
           //finish node
           document.getElementById(`node-${node.row}-${node.col}`).className =
             'node node-finish-reached';
-        }, i * 10);
+        }, i * this.state.speed);
         continue;
       }
       setTimeout(() => {
         //visited node
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-visited';
-      }, i * 10);
+      }, i * this.state.speed);
     }
   };
 
@@ -320,7 +327,7 @@ export class PathFindingVisualizer extends Component {
           } else {
             this.setState({ visualizingAlgorithm: false });
           }
-        }, i * 10);
+        }, i * this.state.speed);
         return;
       }
       setTimeout(() => {
@@ -331,7 +338,7 @@ export class PathFindingVisualizer extends Component {
         if (nodeB !== undefined)
           document.getElementById(`node-${nodeB.row}-${nodeB.col}`).className =
             'node node-visited';
-      }, i * 10);
+      }, i * this.state.speed);
     }
   }
 
@@ -355,14 +362,14 @@ export class PathFindingVisualizer extends Component {
             nodesInShortestPathOrder,
             visitedNodesInOrder
           );
-        }, i * 10);
+        }, i * this.state.speed);
         return;
       }
       setTimeout(() => {
         //visited node
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-visited';
-      }, i * 10);
+      }, i * this.state.speed);
     }
   };
 
@@ -378,7 +385,7 @@ export class PathFindingVisualizer extends Component {
             visitedNodesInOrder
           );
           this.setState({ grid: newGrid, visualizingAlgorithm: false });
-        }, i * 10);
+        }, i * (3 * this.state.speed));
         return;
       }
       let node = nodesInShortestPathOrder[i];
@@ -386,7 +393,7 @@ export class PathFindingVisualizer extends Component {
         //shortest path node
         document.getElementById(`node-${node.row}-${node.col}`).className =
           'node node-shortest-path';
-      }, i * 10);
+      }, i * (3 * this.state.speed));
     }
   };
 
@@ -478,6 +485,7 @@ export class PathFindingVisualizer extends Component {
           generateRandomMaze={this.generateRandomMaze.bind(this)}
           generateVerticalMaze={this.generateVerticalMaze.bind(this)}
           generateHorizontalMaze={this.generateHorizontalMaze.bind(this)}
+          updateSpeed={this.updateSpeed.bind(this)}
           clearGrid={this.clearGrid.bind(this)}
           clearPath={this.clearPath.bind(this)}
         />
