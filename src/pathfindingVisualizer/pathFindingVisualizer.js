@@ -47,10 +47,11 @@ const initialNum = getInitialNum(window.innerWidth, window.innerHeight);
 const numberOfRows = initialNum[0];
 const numberOfColumns = initialNum[1];
 
-const startNodeRow = 0;
-const startNodeCol = 0;
-const finishNodeRow = 20;
-const finishNodeCol = 55;
+const startFinishNode = getStartFinishNode(numberOfRows, numberOfColumns);
+const startNodeRow = startFinishNode[0];
+const startNodeCol = startFinishNode[1];
+const finishNodeRow = startFinishNode[2];
+const finishNodeCol = startFinishNode[3];
 
 export class PathFindingVisualizer extends Component {
   state = {
@@ -608,6 +609,59 @@ const getGridWithoutPath = (grid) => {
   }
   return newGrid;
 };
+
+function getRandomNums(num) {
+  let randomNums1 = [];
+  let temp = 2;
+  for (let i = 5; i < num / 2; i += 2) {
+    randomNums1.push(temp);
+    temp += 2;
+  }
+  let randomNums2 = [];
+  temp = -2;
+  for (let i = num / 2; i < num - 5; i += 2) {
+    randomNums2.push(temp);
+    temp -= 2;
+  }
+  return [randomNums1, randomNums2];
+}
+
+function getStartFinishNode(numRows, numColumns) {
+  let randomNums;
+  let x;
+  let y;
+  let startNodeRow;
+  let startNodeCol;
+  let finishNodeRow;
+  let finishNodeCol;
+  if (numRows < numColumns) {
+    randomNums = getRandomNums(numRows);
+    x = Math.floor(numRows / 2);
+    y = Math.floor(numColumns / 4);
+    if (x % 2 !== 0) x -= 1;
+    if (y % 2 !== 0) y += 1;
+    startNodeRow =
+      x + randomNums[1][Math.floor(Math.random() * randomNums[1].length)];
+    startNodeCol = y + [-6, -4, -2, 0][Math.floor(Math.random() * 4)];
+    finishNodeRow =
+      x + randomNums[0][Math.floor(Math.random() * randomNums[0].length)];
+    finishNodeCol =
+      numColumns - y + [0, 2, 4, 6][Math.floor(Math.random() * 4)];
+  } else {
+    randomNums = getRandomNums(numColumns);
+    x = Math.floor(numRows / 4);
+    y = Math.floor(numColumns / 2);
+    if (x % 2 !== 0) x -= 1;
+    if (y % 2 !== 0) y += 1;
+    startNodeRow = x + [-6, -4, -2, 0][Math.floor(Math.random() * 4)];
+    startNodeCol =
+      y + randomNums[1][Math.floor(Math.random() * randomNums[1].length)];
+    finishNodeRow = numRows - x + [0, 2, 4, 6][Math.floor(Math.random() * 4)];
+    finishNodeCol =
+      y + randomNums[0][Math.floor(Math.random() * randomNums[0].length)];
+  }
+  return [startNodeRow, startNodeCol, finishNodeRow, finishNodeCol];
+}
 
 const updateNodesForRender = (
   grid,
