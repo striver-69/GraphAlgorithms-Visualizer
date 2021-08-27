@@ -97,7 +97,7 @@ export class PathFindingVisualizer extends Component {
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderDFS(finishNode);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    }, 10);
+    }, this.state.speed);
   }
 
   visualizeBFS() {
@@ -133,7 +133,7 @@ export class PathFindingVisualizer extends Component {
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderDijkstra(finishNode);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    }, 10);
+    }, this.state.speed);
   }
 
   visualizeAStar() {
@@ -150,7 +150,7 @@ export class PathFindingVisualizer extends Component {
         getNodesInShortestPathOrderAstar(finishNode);
       // console.log('ASTAR', nodesInShortestPathOrder.length);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    }, 10);
+    }, this.state.speed);
   }
 
   visualizeRandomWalk() {
@@ -164,7 +164,7 @@ export class PathFindingVisualizer extends Component {
       const finishNode = grid[finishNodeRow][finishNodeCol];
       const visitedNodesInOrder = randomWalk(grid, startNode, finishNode);
       this.animateRandomWalk(visitedNodesInOrder);
-    }, 10);
+    }, this.state.speed);
   }
 
   visualizeGreedyBFS() {
@@ -181,7 +181,7 @@ export class PathFindingVisualizer extends Component {
         getNodesInShortestPathOrderGreedyBFS(finishNode);
       // console.log('GreedyBFS', nodesInShortestPathOrder.length);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    }, 10);
+    }, this.state.speed);
   }
 
   visualizeBidirectionalGreedySearch() {
