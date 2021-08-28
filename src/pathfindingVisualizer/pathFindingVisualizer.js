@@ -3,7 +3,7 @@ import './pathFindingVisualizer.css';
 import Node from './node';
 import Navbar from './navbar';
 
-//Pathfinding Algorithms
+//------------PATHFINDING ALGORITHMS--------
 import {
   depthFirstSearch,
   getNodesInShortestPathOrderDFS,
@@ -420,6 +420,8 @@ export class PathFindingVisualizer extends Component {
     }
   };
 
+  //-----------------HELPER FUNCTIONS---------------------
+
   clearGrid() {
     if (this.state.visualizingAlgorithm) {
       return;
@@ -529,6 +531,8 @@ export class PathFindingVisualizer extends Component {
     );
   }
 }
+
+//------------------HELPER FUNCTIONS---------------
 
 function getInitialNum(width = 0, height = 0) {
   let numColumns;
