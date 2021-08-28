@@ -118,11 +118,11 @@ export class PathFindingVisualizer extends Component {
       const nodesInShortestPathOrder =
         getNodesInShortestPathOrderBFS(finishNode);
       this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
-    }, 10);
+    }, this.state.speed);
   }
 
   visualizeDijkstra() {
-    if (this.state.visualizingAlgorithm) {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
       return;
     }
     this.setState({ visualizingAlgorithm: true });
@@ -138,7 +138,7 @@ export class PathFindingVisualizer extends Component {
   }
 
   visualizeAStar() {
-    if (this.state.visualizingAlgorithm) {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
       return;
     }
     this.setState({ visualizingAlgorithm: true });
@@ -155,7 +155,7 @@ export class PathFindingVisualizer extends Component {
   }
 
   visualizeRandomWalk() {
-    if (this.state.visualizingAlgorithm) {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
       return;
     }
     this.setState({ visualizingAlgorithm: true });
@@ -169,7 +169,7 @@ export class PathFindingVisualizer extends Component {
   }
 
   visualizeGreedyBFS() {
-    if (this.state.visualizingAlgorithm) {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
       return;
     }
     this.setState({ visualizingAlgorithm: true });
@@ -186,7 +186,7 @@ export class PathFindingVisualizer extends Component {
   }
 
   visualizeBidirectionalGreedySearch() {
-    if (this.state.visualizingAlgorithm) {
+    if (this.state.visualizingAlgorithm || this.state.generatingMaze) {
       return;
     }
     this.setState({ visualizingAlgorithm: true });
